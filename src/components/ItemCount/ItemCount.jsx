@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const ItemCount = (initial=1, stock=10, onAdd) => {
+const ItemCount = ({initial=1, stock=10, onAdd}) => {
    const [count, setCount] = useState (initial)
 
    const handleSumar = () => {
@@ -16,7 +16,7 @@ const ItemCount = (initial=1, stock=10, onAdd) => {
    }
 
    const handleOnAdd = () => {
-      onAdd(`Usted ha seleccionado: ${count}`)
+      onAdd(count)
    }
 
 

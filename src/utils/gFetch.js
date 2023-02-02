@@ -1,5 +1,5 @@
 let productos = [
-    { id: "1" ,categoria: "calcos", name: "Clandes ARG",            price: 250,     foto:"/public/logoclandesarg" },
+    { id: "1" ,categoria: "calcos", name: "Clandes ARG",            price: 250,     foto:"/public/logoclandesarg.jpg" },
     { id: "2" ,categoria: "calcos", name: "Clandes BR",             price: 250,     foto:"/public/logoclandesbrasil.jpg" },
     { id: "3" ,categoria: "calcos", name: "Clandes IG",             price: 250,     foto:"/public/logoclandesinsta.jpg" },
     { id: "4" ,categoria: "calcos", name: "Clandes IG2",            price: 250,     foto:"/public/logoclandesinsta2.jpg" },
@@ -26,18 +26,11 @@ let productos = [
 
   ]
 
-    // export const gFetch = () => {
-    //     return new Promise(( resolve, reject )=>{
-    //         setTimeout(()=>{
-    //             resolve(id ? productos.find(prod => prod.id === id ) : productos)
-    //         }, 1000)
-    //     })
-    // } 
-
-export const gFetch = ()=>{
-    return new Promise(( resolve, reject )=>{
-        setTimeout(()=>{
-            resolve(productos)
-        }, 1000)
+  export const gFetch = (id) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(id ? productos.find(prod => prod.id === (id)) : productos)
+        }, id ? 0 : 1500)
     })
 }
+

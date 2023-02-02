@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
-import {Link, useParams} from "react-router-dom"
+import {useParams} from "react-router-dom"
 import {gFetch} from "../../../utils/gFetch"
 import ItemList from "../../ItemList/ItemList" 
 
 export const ItemListContainer = ( {saludo} ) => {
+
     const [productos, setProductos] = useState ([])
     const [loading, setLoading] = useState(true)
     const {categoryId} = useParams()
@@ -22,7 +23,7 @@ export const ItemListContainer = ( {saludo} ) => {
                 setProductos(respuestaPromesa)
             })
             .catch (err => console.log(err))
-            .finally [() => setLoading (false)]
+            .finally (() => setLoading (false))
         }
     }, [categoryId] )
 

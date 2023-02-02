@@ -16,7 +16,7 @@ const ItemDetail = ({producto}) => {
                <h4>Precio: {producto.price}</h4>
             </div>
             <div className="col-6">
-               <ItemCount onAdd ={onAdd}/>
+               <ItemCount onAdd ={onAdd} />
             </div>
          </div>
       </div>
