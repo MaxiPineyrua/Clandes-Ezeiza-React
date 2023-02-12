@@ -15,7 +15,7 @@ let productos = [
     { id: "14" ,categoria: "guantes", name: "Guantes Azules",       price: 2200,    foto:"/public/guantesazules.jpg" },
     { id: "15" ,categoria: "guantes", name: "Guantes Negros",       price: 2200,    foto:"/public/guantesnegros.jpg" },
     { id: "16" ,categoria: "guantes", name: "Guantes Rojos",        price: 2200,    foto:"/public/guantesrojos.jpg" },
-    { id: "17" ,categoria: "cascos", name: "Casco Blanco-Rosa",     price: 12000,   foto:"/public/cascoblancomujer" },
+    { id: "17" ,categoria: "cascos", name: "Casco Blanco-Rosa",     price: 12000,   foto:"/public/cascoblancomujer.jpg" },
     { id: "18" ,categoria: "cascos", name: "Casco Gris",            price: 12000,   foto:"/public/cascogris.jpg" },
     { id: "19" ,categoria: "cascos", name: "Casco Negro Cerrado",   price: 23000,   foto:"/public/casconegrocerrado.jpg" },
     { id: "20" ,categoria: "cascos", name: "Casco Negro Cross",     price: 17000,   foto:"/public/casconegrocross.jpg" },

@@ -1,44 +1,41 @@
 import { useState, useEffect } from "react"
-import {useParams} from "react-router-dom"
-import {gFetch} from "../../../utils/gFetch"
-import ItemList from "../../ItemList/ItemList" 
+import { collection, getDocs, getFirestore, query, where } from "firebase/firestore"
+import {  useParams } from "react-router-dom"
+import ItemList from "../../ItemList/ItemList"
 
-export const ItemListContainer = ( {saludo} ) => {
+export const ItemListContainer  = ( {saludo} ) => {
+   const [productos, setProductos] = useState([]) 
+   const [loading, setLoading] = useState(true)
+   const { categoryId } = useParams()
 
-    const [productos, setProductos] = useState ([])
-    const [loading, setLoading] = useState(true)
-    const {categoryId} = useParams()
-
-    useEffect (() => {
-        if (categoryId) {
-            gFetch ()
-            .then(respuestaPromesa => {
-                setProductos(respuestaPromesa.filter(items => items.categoria === categoryId))
-            })
-            .catch (err => console.log(err))
-            .finally (() => setLoading (false))
-        } else {
-            gFetch ()
-            .then (respuestaPromesa => {
-                setProductos(respuestaPromesa)
-            })
-            .catch (err => console.log(err))
-            .finally (() => setLoading (false))
-        }
-    }, [categoryId] )
-
-    return (
-        <div className="container">
-            {   loading
-                ?
-                <center>
-                    <h1>Cargando...</h1>
-                </center>
-                :
-                <ItemList productos={productos}/>
+   useEffect(()=>{
+      const firebaseQuerys = () => {
+         const db = getFirestore()
+         const queryCollection = collection(db, "items")
+         const queryCollectionFilter = categoryId ?  query(queryCollection, where("categoria", "==", categoryId)) : queryCollection         
+                
+         getDocs(queryCollectionFilter)
+         .then(respuestaPromesa => {     
+            setProductos(respuestaPromesa.docs.map(prod => ( { id: prod.id, ...prod.data() } )))
+         })        
+         .catch(err => console.log(err))
+         .finally(()=> setLoading(false)) 
+      }
+      
+      firebaseQuerys()
+      
+   },[categoryId])
+    
+   return (
+      <div className="container">             
+         {   loading 
+            ? 
+               <center>
+                  <h1>Cargando...</h1>
+               </center>
+            :                
+            <ItemList productos={productos}/>
             }
-        </div>
-    )
+      </div>
+   )
 }
-
-export default ItemListContainer
