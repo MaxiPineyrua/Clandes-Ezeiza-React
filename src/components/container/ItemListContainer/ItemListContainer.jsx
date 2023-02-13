@@ -11,7 +11,7 @@ export const ItemListContainer  = ( {saludo} ) => {
    useEffect(()=>{
       const firebaseQuerys = () => {
          const db = getFirestore()
-         const queryCollection = collection(db, "items")
+         const queryCollection = collection(db, "productos")
          const queryCollectionFilter = categoryId ?  query(queryCollection, where("categoria", "==", categoryId)) : queryCollection         
                 
          getDocs(queryCollectionFilter)
