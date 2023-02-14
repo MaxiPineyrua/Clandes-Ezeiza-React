@@ -77,21 +77,21 @@ const CartContainer = () => {
                   <input
                      type="text"
                      name="name"
-                     placeholder="ingresar nombre"
+                     placeholder="Ingrese su nombre"
                      value={dataForm.name}
                      onChange={hanleOnChange}
                   /><br /> <br />
                   <input
                      type="text"
                      name="phone"
-                     placeholder="ingresar Teléfono"
+                     placeholder="Ingrese su teléfono"
                      value={dataForm.phone}
                      onChange={hanleOnChange}
                   /><br /> <br />
                   <input
                      type="text"
                      name="email"
-                     placeholder="ingrese su email"
+                     placeholder="Ingrese su email"
                      value={dataForm.email}
                      onChange={hanleOnChange}
                   /><br /> <br />
@@ -102,10 +102,10 @@ const CartContainer = () => {
                      value={dataForm.confirmEmail}
                      onChange={hanleOnChange}
                   /> <br /> <br />
-                  <button type="submit" className="btn btn-outline-success">Generar Orden</button>
+                  <button type="submit" className="btn btn-outline-success">Comprar</button>
+                  <button onClick={vaciarCarrito} className="btn btn-outline-danger">Vaciar Carrito</button>
 
                </form>
-               <button onClick={vaciarCarrito} className="btn btn-outline-danger">Vaciar Carrito</button>
                {precioTotal() !== 0 && <h2>Precio total: {precioTotal()} </h2>}
             </div>
          }
