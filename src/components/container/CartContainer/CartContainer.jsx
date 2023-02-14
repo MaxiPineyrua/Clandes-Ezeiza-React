@@ -51,9 +51,8 @@ const CartContainer = () => {
    return (
 
       <div>
-         {cartList.length > 0 ?
-
-            <div>
+         <div>
+            {cartList.length > 0 ? <div>
                {cartList.map(prod => (
                   <div key={prod.id}>
                      <img src={prod.foto} className="w-25" />
@@ -63,56 +62,58 @@ const CartContainer = () => {
                      <button onClick={() => eliminarItem(prod.id)}> X </button>
                   </div>
                ))}
+            </div> :
+               <div><h2>Su carrito esta vacío.</h2> <br /> </div>
+            }
+         </div>
 
-               {confirmarCompra ?
-                  <div>
-                     <h2>Hemos confirmado su compra. <br /> <br /> Su código de compra es: <br />{confirmarCompra}</h2>
-                  </div> :
-                  <div>
-                     <form onSubmit={generarOrden} className="form-control w-50">
-                        <h3>Formulario</h3>
-                        <input
-                           type="text"
-                           name="name"
-                           placeholder="ingresar nombre"
-                           value={dataForm.name}
-                           onChange={hanleOnChange}
-                        /><br /> <br />
-                        <input
-                           type="text"
-                           name="phone"
-                           placeholder="ingresar Teléfono"
-                           value={dataForm.phone}
-                           onChange={hanleOnChange}
-                        /><br /> <br />
-                        <input
-                           type="text"
-                           name="email"
-                           placeholder="ingrese su email"
-                           value={dataForm.email}
-                           onChange={hanleOnChange}
-                        /><br /> <br />
-                        <input
-                           type="text"
-                           name="confirmEmail"
-                           placeholder="Vuelva a ingresar su email"
-                           value={dataForm.confirmEmail}
-                           onChange={hanleOnChange}
-                        /> <br /> <br />
-                        <button type="submit" className="btn btn-outline-success">Generar Orden</button>
-                        <button onClick={vaciarCarrito} className="btn btn-outline-danger">Vaciar Carrito</button>
-                     </form>
-                  </div>
-               }
+         {confirmarCompra ?
+            <div>
+               <h2>Hemos confirmado su compra. <br /> <br /> Su código de compra es: <br />{confirmarCompra}</h2>
+            </div> :
+            <div>
+               <form onSubmit={generarOrden} className="form-control w-50">
+                  <h3>Formulario</h3>
+                  <input
+                     type="text"
+                     name="name"
+                     placeholder="ingresar nombre"
+                     value={dataForm.name}
+                     onChange={hanleOnChange}
+                  /><br /> <br />
+                  <input
+                     type="text"
+                     name="phone"
+                     placeholder="ingresar Teléfono"
+                     value={dataForm.phone}
+                     onChange={hanleOnChange}
+                  /><br /> <br />
+                  <input
+                     type="text"
+                     name="email"
+                     placeholder="ingrese su email"
+                     value={dataForm.email}
+                     onChange={hanleOnChange}
+                  /><br /> <br />
+                  <input
+                     type="text"
+                     name="confirmEmail"
+                     placeholder="Vuelva a ingresar su email"
+                     value={dataForm.confirmEmail}
+                     onChange={hanleOnChange}
+                  /> <br /> <br />
+                  <button type="submit" className="btn btn-outline-success">Generar Orden</button>
 
-               <Link to="/">
-                  <button>Seguir Comprando</button>
-               </Link>
-
+               </form>
+               <button onClick={vaciarCarrito} className="btn btn-outline-danger">Vaciar Carrito</button>
                {precioTotal() !== 0 && <h2>Precio total: {precioTotal()} </h2>}
             </div>
+         }
 
-            : <h2>Su carrito está vacío.</h2>}
+
+         <Link to="/">
+            <button>Seguir Comprando</button>
+         </Link>
       </div>
 
    )
