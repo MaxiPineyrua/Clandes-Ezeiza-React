@@ -50,70 +50,66 @@ const CartContainer = () => {
 
    return (
 
-      <div>
-         <div>
-            {cartList.length > 0 ? <div>
-               {cartList.map(prod => (
-                  <div key={prod.id}>
-                     <img src={prod.foto} className="w-25" />
-                     <label> - Nombre: {prod.name}</label>
-                     <label> - Cantidad: {prod.cantidad}</label>
-                     <label> - Precio: {prod.price}</label>
-                     <button onClick={() => eliminarItem(prod.id)}> X </button>
-                  </div>
-               ))}
-            </div> :
-               <div><h2>Su carrito esta vacío.</h2> <br /> </div>
-            }
-         </div>
+      <div className="contenedorGeneral">
+         {cartList.map(prod => (
+            <div key={prod.id}>
+               <img src={prod.foto} className="w-25" />
+               <label> - Nombre: {prod.name}</label>
+               <label> - Cantidad: {prod.cantidad}</label>
+               <label> - Precio: {prod.price}</label>
+               <button onClick={() => eliminarItem(prod.id)}> X </button>
+            </div>
+         ))}
 
          {confirmarCompra ?
             <div>
-               <h2>Hemos confirmado su compra. <br /> <br /> Su código de compra es: <br />{confirmarCompra}</h2>
+               <h1>Se ha confirmado su compra. </h1><br /> <br /> <h3>Su código de compra es: <br /> <br /> {confirmarCompra}</h3>
             </div> :
             <div>
-               <form onSubmit={generarOrden} className="form-control w-50">
-                  <h3>Formulario</h3>
-                  <input
-                     type="text"
-                     name="name"
-                     placeholder="Ingrese su nombre"
-                     value={dataForm.name}
-                     onChange={hanleOnChange}
-                  /><br /> <br />
-                  <input
-                     type="text"
-                     name="phone"
-                     placeholder="Ingrese su teléfono"
-                     value={dataForm.phone}
-                     onChange={hanleOnChange}
-                  /><br /> <br />
-                  <input
-                     type="text"
-                     name="email"
-                     placeholder="Ingrese su email"
-                     value={dataForm.email}
-                     onChange={hanleOnChange}
-                  /><br /> <br />
-                  <input
-                     type="text"
-                     name="confirmEmail"
-                     placeholder="Vuelva a ingresar su email"
-                     value={dataForm.confirmEmail}
-                     onChange={hanleOnChange}
-                  /> <br /> <br />
-                  <button type="submit" className="btn btn-outline-success">Comprar</button>
-                  <button onClick={vaciarCarrito} className="btn btn-outline-danger">Vaciar Carrito</button>
+               {cartList.length > 0 ? <div>
+                  <form onSubmit={generarOrden}>
+                     <h2>Completa el Fromulario</h2>
+                     <input
+                        type="text"
+                        name="name"
+                        placeholder='ingresar nombre'
+                        value={dataForm.name}
+                        onChange={hanleOnChange}
+                     /><br /><br />
+                     <input
+                        type="number"
+                        name="phone"
+                        placeholder='ingresar Teléfono'
+                        value={dataForm.phone}
+                        onChange={hanleOnChange}
+                     /><br /><br />
+                     <input
+                        type="text"
+                        name="email"
+                        placeholder='ingresar email'
+                        value={dataForm.email}
+                        onChange={hanleOnChange}
+                     /><br /><br />
+                     <input
+                        type="text"
+                        name="confirmEmail"
+                        placeholder='Vuelva a ingresar email'
+                        value={dataForm.confirmEmail}
+                        onChange={hanleOnChange}
+                     /><br /><br />
+                     <button type="submit" className="btn btn-outline-success">Comprar</button>
+                  </form><br />
+                  <button onClick={vaciarCarrito} className="btn btn-outline-danger">Vaciar Carrito</button> 
+               </div> : <h1>Su carrito está vacío, si desea agregar algo pulse el botón "Seguir comprando" aquí debajo.</h1>}
 
-               </form>
                {precioTotal() !== 0 && <h2>Precio total: {precioTotal()} </h2>}
             </div>
          }
 
-
          <Link to="/">
-            <button>Seguir Comprando</button>
+            <button className="btn btn-dark">Seguir Comprando</button>
          </Link>
+
       </div>
 
    )
