@@ -1,41 +1,37 @@
 import { useState, useEffect } from "react"
-import { collection, getDocs, getFirestore, query, where } from "firebase/firestore"
-import {  useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import ItemList from "../../ItemList/ItemList"
+import { getItems, getItemsByCategory } from "../../../firebase/firebase.js";
+import { DotSpinner } from '@uiball/loaders'
 
-export const ItemListContainer  = ( {saludo} ) => {
-   const [productos, setProductos] = useState([]) 
+export const ItemListContainer = ({ saludo }) => {
+   const [productos, setProductos] = useState([])
    const [loading, setLoading] = useState(true)
    const { categoryId } = useParams()
 
-   useEffect(()=>{
-      const firebaseQuerys = () => {
-         const db = getFirestore()
-         const queryCollection = collection(db, "productos")
-         const queryCollectionFilter = categoryId ?  query(queryCollection, where("categoria", "==", categoryId)) : queryCollection         
-                
-         getDocs(queryCollectionFilter)
-         .then(respuestaPromesa => {     
-            setProductos(respuestaPromesa.docs.map(prod => ( { id: prod.id, ...prod.data() } )))
-         })        
-         .catch(err => console.log(err))
-         .finally(()=> setLoading(false)) 
-      }
-      
-      firebaseQuerys()
-      
-   },[categoryId])
-    
+   useEffect(() => {
+      (categoryId ? getItemsByCategory(categoryId) : getItems())
+         .then(respuestaPromesa => {
+            setProductos(categoryId ? respuestaPromesa.filter(items => items.categoria === categoryId) : respuestaPromesa)
+         })
+         .then(err => console.log(err))
+         .finally(() => setLoading(false))
+   }, [categoryId])
+
    return (
-      <div className="container">             
-         {   loading 
-            ? 
-               <center>
-                  <h1>Cargando...</h1>
-               </center>
-            :                
-            <ItemList productos={productos}/>
-            }
+      <div className="container mt-5">
+         {loading
+            ?
+            <center>
+               <DotSpinner
+                  size={40}
+                  speed={0.9}
+                  color="black"
+               />
+            </center>
+            :
+            <ItemList productos={productos} />
+         }
       </div>
    )
 }

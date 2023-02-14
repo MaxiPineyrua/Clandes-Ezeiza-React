@@ -1,90 +1,121 @@
 import { useState } from "react"
-import { addDoc, collection, doc, getFirestore, updateDoc } from "firebase/firestore"
+import { addDoc, collection, getFirestore } from "firebase/firestore"
 import { useCartContext } from "../../../context/CartContext"
+import { Link } from "react-router-dom"
 
 const CartContainer = () => {
    const [dataForm, setDataForm] = useState({
       name: "",
       phone: "",
-      email: ""
+      email: "",
+      confirmEmail: "",
    })
+
+   const [confirmarCompra, setConfirmarCompra] = useState("")
 
    const { cartList, vaciarCarrito, precioTotal, eliminarItem } = useCartContext()
 
    const generarOrden = (evt) => {
+
       evt.preventDefault()
-   
-      const order = {}
 
-      order.buyer = dataForm
+      if (cartList.length > 0 && dataForm.name && dataForm.phone && dataForm.email && dataForm.email === dataForm.confirmEmail) {
 
-      order.items = cartList.map( ( {id, name,price } ) => ({name, price, id}))
+         const order = {}
 
-      order.total = precioTotal()
+         order.buyer = dataForm
 
-      const db = getFirestore() 
+         order.items = cartList.map(({ id, name, price }) => ({ name, price, id }))
 
-      const queyCollection =  collection(db, "orders")
+         order.total = precioTotal()
 
-      addDoc(queyCollection, order)
-      .then(resp => console.log(resp))
-      .catch(err => console.log(err))
+         const db = getFirestore()
+
+         const queyCollection = collection(db, "orders")
+
+         addDoc(queyCollection, order)
+            .then(resp => setConfirmarCompra(resp.id))
+            .catch(err => console.log(err))
+            .finally(vaciarCarrito())
+      } else { alert("Por favor ingrese bien sus datos o asegurese de tener productos en el carrito.") }
    }
-   
-   const hanleOnChange = (evt)=>{
-      console.log(evt.target.name)
-      console.log(evt.target.value)
+
+   const hanleOnChange = (evt) => {
 
       setDataForm({
          ...dataForm,
          [evt.target.name]: evt.target.value
       })
    }
-   
-   console.log(dataForm)
-   
-   return (
-      <div>
-         {cartList.map(prod =>  (
-            <div key={prod.id}>
-               <img src={prod.foto} className="w-25" />
-               <label>nombre: {prod.name}</label>
-               <label> - cantidad: {prod.cantidad}</label>
-               <label> - precio: {prod.price }</label>
-               <button onClick = {() => eliminarItem(prod.id)}> X </button>
-            </div>
-         ))}
-          
-         <form onSubmit={generarOrden} className="form-control w-50">
-            <h3>Formulario</h3>
-            <input 
-               type="text" 
-               name="name"  
-               placeholder="ingresar nombre"
-               value = {dataForm.name}
-               onChange={hanleOnChange}
-            /><br />
-            <input 
-               type="text" 
-               name="phone"  
-               placeholder="ingresar Teléfono"
-               value = {dataForm.phone}
-               onChange={hanleOnChange}
-            /><br />
-            <input 
-               type="text" 
-               name="email"  
-               placeholder="ingresar email"
-               value = {dataForm.email}
-               onChange={hanleOnChange}
-            />
-            <button type="submit" className="btn btn-outline-success">Generar Orden</button>
-         </form>
-         <button onClick={vaciarCarrito} className="btn btn-outline-danger">Vaciar Carrito</button>
 
-         { precioTotal() !== 0 &&  <h2>Precio total: { precioTotal() } </h2>  }  
+   return (
+
+      <div>
+         {cartList.length > 0 ?
+
+            <div>
+               {cartList.map(prod => (
+                  <div key={prod.id}>
+                     <img src={prod.foto} className="w-25" />
+                     <label> - Nombre: {prod.name}</label>
+                     <label> - Cantidad: {prod.cantidad}</label>
+                     <label> - Precio: {prod.price}</label>
+                     <button onClick={() => eliminarItem(prod.id)}> X </button>
+                  </div>
+               ))}
+
+               {confirmarCompra ?
+                  <div>
+                     <h2>Hemos confirmado su compra. <br /> <br /> Su código de compra es: <br />{confirmarCompra}</h2>
+                  </div> :
+                  <div>
+                     <form onSubmit={generarOrden} className="form-control w-50">
+                        <h3>Formulario</h3>
+                        <input
+                           type="text"
+                           name="name"
+                           placeholder="ingresar nombre"
+                           value={dataForm.name}
+                           onChange={hanleOnChange}
+                        /><br /> <br />
+                        <input
+                           type="text"
+                           name="phone"
+                           placeholder="ingresar Teléfono"
+                           value={dataForm.phone}
+                           onChange={hanleOnChange}
+                        /><br /> <br />
+                        <input
+                           type="text"
+                           name="email"
+                           placeholder="ingrese su email"
+                           value={dataForm.email}
+                           onChange={hanleOnChange}
+                        /><br /> <br />
+                        <input
+                           type="text"
+                           name="confirmEmail"
+                           placeholder="Vuelva a ingresar su email"
+                           value={dataForm.confirmEmail}
+                           onChange={hanleOnChange}
+                        /> <br /> <br />
+                        <button type="submit" className="btn btn-outline-success">Generar Orden</button>
+                        <button onClick={vaciarCarrito} className="btn btn-outline-danger">Vaciar Carrito</button>
+                     </form>
+                  </div>
+               }
+
+               <Link to="/">
+                  <button>Seguir Comprando</button>
+               </Link>
+
+               {precioTotal() !== 0 && <h2>Precio total: {precioTotal()} </h2>}
+            </div>
+
+            : <h2>Su carrito está vacío.</h2>}
       </div>
-  )
+
+   )
 }
 
 export default CartContainer
